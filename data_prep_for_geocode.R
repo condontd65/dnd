@@ -69,8 +69,9 @@ colnames(km.geordy) <- c('geoaddress','geoid')
 masslist.geordy <- data.table(masslist$geoaddress, masslist$geoid)
 colnames(masslist.geordy) <- c('geoaddress','geoid')
 
-nhpd.geordy <- data.table(nhpd$geoaddress, nhpd$geoid)
-colnames(nhpd.geordy) <- c('geoaddress','geoid')
+# Keep nhpd zips for cleaning purposes
+nhpd.geordy <- data.table(nhpd$geoaddress, nhpd$geoid, nhpd$Zip)
+colnames(nhpd.geordy) <- c('geoaddress','geoid','zip')
 
 write.csv(km.geordy, "tables/km_house_geo.csv", row.names = FALSE)
 write.csv(masslist.geordy, "tables/masslist_geo.csv", row.names = FALSE)

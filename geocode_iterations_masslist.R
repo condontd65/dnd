@@ -107,7 +107,7 @@ masslist.run1.b <- data.frame(lapply(masslist.run1.b, function(x) {
   gsub("West End", "02114", x)
 }))
 
-write.csv(masslist.run1.b, "tables/masslist/masslist_georun_1_failed.csv", row.names = FALSE)
+#write.csv(masslist.run1.b, "tables/masslist/masslist_georun_1_failed.csv", row.names = FALSE)
 
 
 ### Bring in second run of masslist
@@ -132,11 +132,27 @@ rm(masslist.run3)
 
 ### Merge all masslist together
 # Create tables of the matched data contianing only the geodid and the SAMID
+ml.r1 <- data.table(masslist.run1.g$Match.Id, masslist.run1.g$geoid)
+colnames(ml.r1) <- c("SAM_ID", "geoid")
+
+ml.r2 <- data.table(masslist.run2.g$Match.Id, masslist.run2.g$geoid)
+colnames(ml.r2) <- c("SAM_ID", "geoid")
+
+ml.r3 <- data.table(masslist.run3.g$Match_Id, masslist.run3.g$geoid)
+colnames(ml.r3) <- c("SAM_ID", "geoid")
+
+ml.no <- data.table(masslist.run3.b$Match_Id, masslist.run3.b$geoid)
+colnames(ml.no) <- c("SAM_ID", "geoid")
+ml.no$SAM_ID <- NA
+
+rm(masslist.run1.b, masslist.run1.g, masslist.run2.b, masslist.run2.g, masslist.run3.b, masslist.run3.g)
+
+# Still need to merge them all together and order by geoid
+#bpda.address.geo.all <- rbind(bpda.addres.geo.all, bpda.address.geo3)
 
 
 
 
-bpda.address.geo.all <- rbind(bpda.addres.geo.all, bpda.address.geo3)
 
 
 
@@ -148,55 +164,6 @@ bpda.address.geo.all <- rbind(bpda.addres.geo.all, bpda.address.geo3)
 
 
 
-
-
-
-
-
-
-
-
-
-##### Sample code
-
-
-## Run 2
-bpda.run2 <- read.csv("bpda_run2.csv")
-bpda.run2 <- bpda.run2[1:69,1:16]
-bpda.sam.good.run2 <- subset(bpda.run2, Match.Score > 0)
-
-bpda.address.geo2 <- data.table(bpda.sam.good.run2$Street__,
-                                bpda.sam.good.run2$Street_Name,
-                                bpda.sam.good.run2$Street_suffix,
-                                bpda.sam.good.run2$Unit__,
-                                bpda.sam.good.run2$ZIP_1,
-                                bpda.sam.good.run2$Match.Id,
-                                bpda.sam.good.run2$Address)
-colnames(bpda.address.geo2) <- c('Street #', 'Street Name',
-                                 'Street suffix', 'Unit #', 'ZIP', 'SAM ID',
-                                 'Address')
-
-bpda.addres.geo.all <- rbind(bpda.address.geo, bpda.address.geo2)
-
-# Run 3
-bpda.run3 <- read.csv('bpda_run3.csv')
-bpda.run3 <- bpda.run3[1:43,1:16]
-bpda.sam.good.run3 <- subset(bpda.run3, Match.Score > 0)
-
-bpda.address.geo3 <- data.table(bpda.sam.good.run3$Street__,
-                                bpda.sam.good.run3$Street_Name,
-                                bpda.sam.good.run3$Street_suffix,
-                                bpda.sam.good.run3$Unit__,
-                                bpda.sam.good.run3$ZIP_1,
-                                bpda.sam.good.run3$Match.Id,
-                                bpda.sam.good.run3$Address)
-colnames(bpda.address.geo3) <- c('Street #', 'Street Name',
-                                 'Street suffix', 'Unit #', 'ZIP', 'SAM ID',
-                                 'Address')
-
-bpda.address.geo.all <- rbind(bpda.addres.geo.all, bpda.address.geo3)
-
-##### End sample code
 
 
 
