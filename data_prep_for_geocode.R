@@ -105,7 +105,7 @@ sf <- sf.orig
 
 cedac$geoaddress <- paste(cedac$Address, cedac$Zip)
 hu$geoaddress <- paste(hu$address_line1_text, hu$zip_code)
-sf$geoaddress <- paste(sf$`Unit Name`, sf$`Unit ZIP`)
+sf$geoaddress <- paste(sf$`Unit Street #`, sf$`Unit Street Name`, sf$`Unit ZIP`)
 
 # Prep datasets for export into csv and geocoding
 cedac.geordy <- data.table(cedac$geoaddress, cedac$geoid)
