@@ -57,6 +57,18 @@ cedac.no <- data.table(cedac.run3.b$Match_Id, cedac.run3.b$geoid)
 colnames(cedac.no) <- c("SAM_ID", "geoid")
 cedac.no$SAM_ID <- NA
 
+# Still need to merge them all together and order by geoid
+#bpda.address.geo.all <- rbind(bpda.addres.geo.all, bpda.address.geo3)
+
+cedac.geo <- rbind(cedac.r1, cedac.r2, cedac.r3, cedac.no)
+cedac.geo <- cedac.geo[order(geoid),]
+
+cedac.complete <- merge(cedac.orig, cedac.geo, by = "geoid")
+
+#write.csv(cedac.geo, "tables/cedac/cedac_samid.csv", row.names = FALSE)
+write.csv(cedac.complete, "tables/cedac/cedac_samid.csv", row.names = FALSE)
+gs_upload("tables/cedac/cedac_samid.csv",
+          sheet_title = "CEDAC SAM ID")
 
 
 

@@ -307,7 +307,18 @@ rm(km.run1.b, km.run1.g, km.run2.b, km.run2.g, km.run3.b, km.run3.g, km.run4.b, 
 #bpda.address.geo.all <- rbind(bpda.addres.geo.all, bpda.address.geo3)
 
 
+# Still need to merge them all together and order by geoid
+#bpda.address.geo.all <- rbind(bpda.addres.geo.all, bpda.address.geo3)
 
+km.geo <- rbind(km.r1, km.r2, km.r3, km.r4, km.r5, km.r6, km.no)
+km.geo <- km.geo[order(geoid),]
+
+km.complete <- merge(km.orig, km.geo, by = "geoid")
+
+#write.csv(km.geo, "tables/km/km_samid.csv", row.names = FALSE)
+write.csv(km.complete, "tables/km/km_samid.csv", row.names = FALSE)
+gs_upload("tables/km/km_samid.csv",
+          sheet_title = "KM SAM ID")
 
 
 

@@ -2,7 +2,7 @@
 library(tidyverse)
 library(stringr)
 library(dplyr)
-library(qdap)
+#library(qdap)
 library(data.table)
 library(DescTools)
 library(zoo)
@@ -150,13 +150,15 @@ rm(masslist.run1.b, masslist.run1.g, masslist.run2.b, masslist.run2.g, masslist.
 # Still need to merge them all together and order by geoid
 #bpda.address.geo.all <- rbind(bpda.addres.geo.all, bpda.address.geo3)
 
+masslist.geo <- rbind(ml.r1, ml.r2, ml.r3, ml.no)
+masslist.geo <- masslist.geo[order(geoid),]
 
+masslist.complete <- merge(masslist.orig, masslist.geo, by = "geoid")
 
-
-
-
-
-
+#write.csv(masslist.geo, "tables/masslist/masslist_samid.csv", row.names = FALSE)
+write.csv(masslist.complete, "tables/masslist/masslist_samid.csv", row.names = FALSE)
+gs_upload("tables/masslist/masslist_samid.csv",
+          sheet_title = "Masslist SAM ID")
 
 
 

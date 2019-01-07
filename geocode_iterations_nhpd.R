@@ -103,9 +103,19 @@ nhpd.no2$SAM_ID <- NA
 rm(nhpd.run1.b, nhpd.run1.g, nhpd.run2.b, nhpd.run2.g, nhpd.run3.b, nhpd.run3.g, nhpd.run1.b.notboston,
    nhpd.run1.b.rel, projstring, spdf, zips, zips.4326)
 
+
 # Still need to merge them all together and order by geoid
+#bpda.address.geo.all <- rbind(bpda.addres.geo.all, bpda.address.geo3)
 
+nhpd.geo <- rbind(nhpd.r1, nhpd.r2, nhpd.r3, nhpd.no, nhpd.no2)
+nhpd.geo <- nhpd.geo[order(geoid),]
 
+nhpd.complete <- merge(nhpd.orig, nhpd.geo, by = "geoid")
+
+#write.csv(nhpd.geo, "tables/nhpd/nhpd_samid.csv", row.names = FALSE)
+write.csv(nhpd.complete, "tables/nhpd/nhpd_samid.csv", row.names = FALSE)
+gs_upload("tables/nhpd/nhpd_samid.csv",
+          sheet_title = "NHPD SAM ID")
 
 
 

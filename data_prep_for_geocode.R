@@ -2,7 +2,7 @@ library(googlesheets)
 library(tidyverse)
 library(stringr)
 library(dplyr)
-library(qdap)
+#library(qdap)
 library(data.table)
 library(DescTools)
 library(zoo)
@@ -77,8 +77,7 @@ colnames(nhpd.geordy) <- c('geoaddress','geoid','zip')
 #write.csv(masslist.geordy, "tables/masslist_geo.csv", row.names = FALSE)
 #write.csv(nhpd.geordy, "tables/nhpd_geo.csv", row.names = FALSE)
 
-rm(km, km.cols, km.orig, km.orig.colnames, masslist, masslist.geordy, 
-   masslist.orig, nhpd, nhpd.geordy, nhpd.orig, km.geordy)
+rm(km, km.cols, km.orig.colnames, masslist, masslist.geordy, nhpd, nhpd.geordy, km.geordy)
 
 ### Next three tables
 ## sf, cedac, hu
@@ -123,7 +122,7 @@ write.csv(cedac.geordy, "tables/cedac/cedac_geo.csv", row.names = FALSE)
 write.csv(hu.geordy, "tables/hu/hu_geo.csv", row.names = FALSE)
 write.csv(sf.geordy, "tables/sf/sf_geo.csv", row.names = FALSE)
 
-
+rm(sf, sf.cols, cedac, cedac.geordy, hu, hu.geordy, sf.geordy)
 
 
 

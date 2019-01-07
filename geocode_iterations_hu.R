@@ -101,6 +101,18 @@ colnames(hu.no.none) <- c("SAM_ID", "geoid")
 hu.no.none$SAM_ID <- NA
 
 
+# Still need to merge them all together and order by geoid
+#bpda.address.geo.all <- rbind(bpda.addres.geo.all, bpda.address.geo3)
+
+hu.geo <- rbind(hu.r1, hu.r2, hu.r3, hu.no)
+hu.geo <- hu.geo[order(geoid),]
+
+hu.complete <- merge(hu.orig, hu.geo, by = "geoid")
+
+#write.csv(hu.geo, "tables/hu/hu_samid.csv", row.names = FALSE)
+write.csv(hu.complete, "tables/hu/hu_samid.csv", row.names = FALSE)
+gs_upload("tables/hu/hu_samid.csv",
+          sheet_title = "HU SAM ID")
 
 
 
