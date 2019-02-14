@@ -5,6 +5,8 @@ library(dplyr)
 library(data.table)
 library(DescTools)
 library(zoo)
+library(googlesheets)
+library(xlsx)
 
 # Bring in the first round of geocoded data
 sf.run1 <- read.csv("tables/sf/sf_georun_1.csv")
