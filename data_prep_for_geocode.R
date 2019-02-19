@@ -21,13 +21,14 @@ masslist.orig <- gs_read(masslist.orig)
 nhpd.orig <- gs_title("NHPD Database 2018")
 nhpd.orig <- gs_read(nhpd.orig)
 
-km.orig <- gs_title("KM Housing Master 2011 to 12.28.18")
+km.orig <- gs_title("Copy of KM Housing Master 2011 to 12.28.18")
 km.orig <- gs_read(km.orig)
 km.orig.colnames <- km.orig
 
 
-km.orig.colnames <- as.matrix(km.orig.colnames)
-colnames(km.orig) <- km.orig.colnames[1,]
+#km.orig.colnames <- as.matrix(km.orig.colnames)
+#colnames(km.orig) <- km.orig.colnames[1,]
+colnames(km.orig) <- km.orig[16,]
 
 # Create unique geo_id to reconnect geo info to tables. This is done on all for consistency
 masslist.orig <- tibble::rowid_to_column(masslist.orig,'geoid')
