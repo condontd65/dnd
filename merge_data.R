@@ -197,6 +197,30 @@ sf <- sf [ !(is.na(sf$Covenant_Start_Date) & is.na(sf$Covenant_End_Date) & is.na
 master.sf <- merge(master.5, sf, by = "SAM_ID", all.y = FALSE, all.x = TRUE)
 master.sf <- unique(master.sf)
 
+master.sf$Yr_First_Submitted [ !is.na(master.sf$Covenant_Start_Date) ] <-
+  master.sf$Covenant_Start_Date [ !is.na(master.sf$Covenant_Start_Date) ]
+
+master.sf$Yr_End [ !is.na(master.sf$Covenant_End_Date) ] <-
+  master.sf$Covenant_End_Date [ !is.na(master.sf$Covenant_End_Date) ]
+
+master.sf$ManagementCompany [ !is.na(master.sf$ManagementCompanyManager) ] <-
+  master.sf$ManagementCompanyManager [ !is.na(master.sf$ManagementCompanyManager) ]
+
+master.sf$MainOffice [ is.na(master.sf$MainOffice) & !is.na(master.sf$PropertyManagerPhone) ] <- 
+  master.sf$PropertyManagerPhone [ is.na(master.sf$MainOffice) & !is.na(master.sf$PropertyManagerPhone) ]
+
+master.6 <- master.sf
+
+## Drop out the unecessary columns
+drops <- c('Current Elderly Units','New Expiry Date','mgmt_agent_org_name','mgmt_agent_main_phone_number',
+           'mgmt_agent_email_text','ManagementEmail','SalesForce','Complete Date','Management_Company',
+           'Main_Office','Site_Office','ELD','PB_Subsidy','EarliestStartDate','LatestEndDate','ManagerName',
+           'TargetTenantType','S8_1_Status','S8_2_Status','S202_1_Status','LIHTC_1_Status','HOME_1_Status',
+           'Disabled','Covenant_Start_Date','Covenant_End_Date','ManagementCompanyManager','PropertyManagerPhone')
+
+master.fin <- master.6
+master.fin <- master.fin [ , !(names(master.fin) %in% drops)]
+
 
 
 #master.cedac <- master[order(master$SAM_ID),]
