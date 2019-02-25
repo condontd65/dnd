@@ -38,12 +38,14 @@ cedac <- cedac [ !(is.na(cedac$`Current Elderly Units`) & is.na(cedac$`New Expir
 ## Try a merge then replace
 master.cedac <- merge(master, cedac, by = "SAM_ID", all.x = TRUE, all.y = FALSE)
 
+master.cedac <- master.cedac [ order(master.cedac$geoid), ]
+
 
 master.cedac$ElderlyUnits [ is.na(master.cedac$ElderlyUnits) ] <- 
   master.cedac$`Current Elderly Units` [ is.na(master.cedac$ElderlyUnits)]
 
-master.cedac$Yr_End [ !is.na(master.cedac$`Current Elderly Units`) ] <-
-  master.cedac$`New Expiry Date` [ !is.na(master.cedac$`Current Elderly Units`) ]
+master.cedac$Yr_End [ !is.na(master.cedac$`New Expiry Date`) ] <-
+  master.cedac$`New Expiry Date` [ !is.na(master.cedac$`New Expiry Date`) ]
 
 master.1 <- master.cedac
 
@@ -129,8 +131,8 @@ master.ml$MainOffice [ !is.na(master.ml$Main_Office) ] <-
 master.ml$SiteOffice [ !is.na(master.ml$Site_Office) ] <-
   master.ml$Site_Office [ !is.na(master.ml$Site_Office) ]
 
-master.ml$ElderlyUnits [ !is.na(master.ml$ElderlyUnits) | !is.na(master.ml$ELD) ] <- 
-  master.ml$ELD [ !is.na(master.ml$ElderlyUnits) | !is.na(master.ml$ELD) ]
+master.ml$ElderlyUnits [ is.na(master.ml$ElderlyUnits) & !is.na(master.ml$ELD) ] <- 
+  master.ml$ELD [ is.na(master.ml$ElderlyUnits) & !is.na(master.ml$ELD) ]
 
 master.ml$Section_8 [ master.ml$PB_Subsidy == "X" ] <- "x"
 
@@ -215,18 +217,34 @@ master.6 <- master.sf
 drops <- c('Current Elderly Units','New Expiry Date','mgmt_agent_org_name','mgmt_agent_main_phone_number',
            'mgmt_agent_email_text','ManagementEmail','SalesForce','Complete Date','Management_Company',
            'Main_Office','Site_Office','ELD','PB_Subsidy','EarliestStartDate','LatestEndDate','ManagerName',
-           'TargetTenantType','S8_1_Status','S8_2_Status','S202_1_Status','LIHTC_1_Status','HOME_1_Status',
+           'TargetTenantType','S8_1_Status','S8_2_Status','S202_1_Status','LIHTC_1_Status','Salesforce_link_text',
            'Disabled','Covenant_Start_Date','Covenant_End_Date','ManagementCompanyManager','PropertyManagerPhone')
 
 master.fin <- master.6
 master.fin <- master.fin [ , !(names(master.fin) %in% drops)]
 
+master.fin <- master.fin [ order(master.fin$geoid), ]
+
+drops <- c('geoid','geoaddress')
+master.fin <- master.fin [ , !(names(master.fin) %in% drops)]
+
+master.fin <- master.fin %>% select(-SAM_ID,SAM_ID)
+
+master.fin[is.na(master.fin)] <- ''
+
+master.fin$ZipCode <- str_pad(master.fin$ZipCode, 5, pad = "0")
+
 
 
 #master.cedac <- master[order(master$SAM_ID),]
-n_occur <- data.frame(table(master.sf$SAM_ID))
-n_occur[n_occur$Freq > 1,]
+#n_occur <- data.frame(table(master.sf$SAM_ID))
+#n_occur[n_occur$Freq > 1,]
 
+write.xlsx(master.fin,'citywide.xlsx',row.names = FALSE)
+write.csv(master.fin, 'citywide.csv',row.names = FALSE)
+
+gs_upload("citywide.xlsx",
+          sheet_title = "CITYWIDE_MERGED")
 
 
 
